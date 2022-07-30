@@ -25,7 +25,7 @@ create table "customerPhone" (
 	id serial primary key,
 	"customerId" integer not null references "customers"("id"),
 	number text not null,
-	type type_phone
+	type type_phone not null
 );
 
 create table "customerAddresses" (
@@ -40,7 +40,7 @@ create table "customerAddresses" (
 
 create table "bankAccount" (
 	id serial primary key,
-	"customerId" integer not null unique references "customers"("id"),
+	"customerId" integer not null references "customers"("id"),
 	"accountNumber" text not null unique,
 	agency text not null,
 	"openDate" date not null default now(),
@@ -51,17 +51,17 @@ create type type_transaction as enum ('deposit', 'withdraw');
 
 create table transactions (
 	id serial primary key,
-	"bankAccountId" integer not null unique references "bankAccount"("id"),
+	"bankAccountId" integer not null references "bankAccount"("id"),
 	amount integer not null default 0,
-	type type_transaction,
+	type type_transaction not null,
 	time timestamp not null default now(),
 	description text,
-	cancelled boolean not null default false
+	cancelled bool not null default false
 );
 
 create table "creditCard" (
 	id serial primary key,
-	"bankAccountId" integer not null unique references "bankAccount"("id"),
+	"bankAccountId" integer not null references "bankAccount"("id"),
 	name text not null,
 	number text not null,
 	"securityCode" varchar(3) not null,
